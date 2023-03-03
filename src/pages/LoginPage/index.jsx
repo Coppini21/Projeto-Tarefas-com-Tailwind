@@ -1,29 +1,37 @@
-import { LockClosedIcon } from "@heroicons/react/20/solid";
+import { LockClosedIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const [showPage, setShowPage] = useState(false);
-  console.log(showPage);
+  const [showPage, setShowPage] = useState(true);
+  const navigate = useNavigate();
 
-  function cadastro(e){
-    e.preventDefault()
-    localStorage.setItem('name', e.target[1].value)
-    localStorage.setItem('email', e.target[2].value)
-    localStorage.setItem('password', e.target[3].value)
-    localStorage.setItem('remember', e.target[4].checked)
-    console.log(e)
+  function cadastro(e) {
+    e.preventDefault();
+    localStorage.setItem("name", e.target[1].value);
+    localStorage.setItem("email", e.target[2].value);
+    localStorage.setItem("password", e.target[3].value);
+    localStorage.setItem("remember", e.target[4].checked);
+    localStorage.setItem("autorizacao", true)
+    navigate("/board");
   }
 
-  function login(e){
-    e.preventDefault()
-    if(e.target[1].value === localStorage.getItem("email")){
-      if(e.target[2].value === localStorage.getItem("password")){
-        alert("Autorizado!")
-      }else{
-        alert("Error: senha inválida!")
+  function login(e) {
+    const liberaracao = localStorage.getItem("autorizacao")
+    e.preventDefault();
+    if (e.target[1].value === localStorage.getItem("email")) {
+      if (e.target[2].value === localStorage.getItem("password")) {
+        if(liberaracao){
+          localStorage.setItem("autorizacao", true)
+        }else{
+          localStorage.setItem("autorizacao", true)
+        }
+        navigate("/board")
+      } else {
+        alert("Error: senha inválida!");
       }
-    }else{
-      alert("Error: e-mail inválido!")
+    } else {
+      alert("Error: e-mail inválido!");
     }
   }
 
@@ -41,7 +49,10 @@ export default function LoginPage() {
               {showPage ? "Entre" : "Cadastre-se"}
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={showPage?  login : cadastro}>
+          <form
+            className="mt-8 space-y-6"
+            onSubmit={showPage ? login : cadastro}
+          >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               {!showPage ? (
@@ -130,7 +141,7 @@ export default function LoginPage() {
                     aria-hidden="true"
                   />
                 </span>
-                {showPage? "Sing In" : "Sing Up"}
+                {showPage ? "Sing In" : "Sing Up"}
               </button>
             </div>
           </form>

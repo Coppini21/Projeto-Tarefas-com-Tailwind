@@ -6,15 +6,18 @@ module.exports = {
   ],
   theme: {
     screens: {
-      'md': {'max': '767px'},
+      'md': { 'max': '767px' },
       // => @media (max-width: 767px) { ... }
+      'lg': { 'max': '1024px'},
     },
 
     extend: {
       width: {
+        '650': '40rem',
         '767': '48rem',
         '850': '54rem',
       }
+
     },
   },
   plugins: [
